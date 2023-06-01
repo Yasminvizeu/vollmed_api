@@ -10,6 +10,6 @@ public class helloController {
 
     @GetMapping // requisisão /hello do tipo get
     public String olaMundo(){
-        return "Hello World!";
+        return "Hello World lba bla !";
     }
 }
