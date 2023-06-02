@@ -1,0 +1,1 @@
+alter table medicos add sexo varchar (20) not null;

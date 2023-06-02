@@ -3,15 +3,14 @@ package med.voll.api.controller;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.medico.DadosCadastroMedicos;
+import med.voll.api.medico.DadosListagemMedico;
 import med.voll.api.medico.Medico;
 import med.voll.api.medico.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLOutput;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("medicos")
@@ -29,6 +28,12 @@ public class MedicoControler {
         //Records são usados para representar uma classe imutável, contendo apenas atributos, construtor e métodos de leitura, de uma maneira muito simples e enxuta.
         //pois apenas representar dados que serão recebidos ou devolvidos pela API, sem nenhum tipo de comportamento.
         repository.save(new Medico(dados));
+    }
+
+    @GetMapping
+    public List<DadosListagemMedico> listar(){
+        return repository.findAll().stream().map(DadosListagemMedico::new).toList();//stream().map() é usado pra converter de Medico para DadoListagemMedico
+
     }
 
 }
