@@ -9,6 +9,7 @@ import med.voll.api.medico.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,9 +34,10 @@ public class MedicoControler {
     }
 
     @GetMapping
-    public Page<DadosListagemMedico> listar(Pageable pag){ // page devolve a lista e a paginação
+    public Page<DadosListagemMedico> listar(@PageableDefault(size=10, sort = {"nome"})Pageable pag){ // page devolve a lista e a paginação
         return repository.findAll(pag).map(DadosListagemMedico::new);//stream().map() é usado pra converter de Medico para DadoListagemMedico
 
     }// usa o size e o page na URL pra limitar as paginacao ex:http://localhost:8080/medicos?size=1&page=0
+    // da pra usar o parametro sort tbm ex: http://localhost:8080/medicos?sort=crm,desc&size=2&page=1
 
 }
