@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -23,13 +24,17 @@ public class MedicoControler {
 
     @PostMapping // usa classe dentro de clase pra pegar partes especificas do JSON
     @Transactional //metodo de escrita precisa ter transação ativa
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroMedicos dados){ // requestBody: dizendo que o request ta vindo no corpo da requisição
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroMedicos dados, UriComponentsBuilder uriBuilder){ // requestBody: dizendo que o request ta vindo no corpo da requisição
         //COMUNICAR QUE VAI DAR ERRO SE OS DADOS FOREM INSERIDOS EM LETRA MINUSCULA
         //DTO -data tranfer object, usado para transmitir os dados que chegam da api, nesse caso foi usado o record DadosCadastroMedicos
         //Records são usados para representar uma classe imutável, contendo apenas atributos, construtor e métodos de leitura, de uma maneira muito simples e enxuta.
         //pois apenas representar dados que serão recebidos ou devolvidos pela API, sem nenhum tipo de comportamento.
-        repository.save(new Medico(dados));//usado o metodo 201 com DTO para devolver dentro das boas praticas
+        var medico = new Medico(dados);
+        repository.save(medico);//usado o metodo 201 com DTO para devolver dentro das boas praticas
 
+        var uri = uriBuilder.path("/medicos/{id}").buildAndExpand(medico.getId()).toUri();//alem de devolver o codigo 201, o cadastrar tambem precisa o cabeçalho com a URI e no corpo da responsa o recurso recem criado(detalhamento)
+
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoMedico(medico));//DTO de detalhamento de dados medicos como parametro
     }
 
     @GetMapping
