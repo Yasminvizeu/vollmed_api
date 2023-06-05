@@ -62,5 +62,11 @@ public class MedicoControler {
 
         return ResponseEntity.noContent().build(); // incluindo um conteudo à resposta, devolvendo o codigo 204 e não  o 200
     }
-    //nova coluna no banco de dados
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id){
+        var medico = repository.getReferenceById(id);
+
+        return ResponseEntity.ok(new DadosDetalhamentoMedico(medico)); // DTO pode ser usado em varios medicos sem problema
+    }
 }
