@@ -31,7 +31,6 @@ public class SecurityConfigurations {
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
     @Bean // ENSINADO O SpRING A CRIAR UM OBJETO AUTHENTICATION MANAGER
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {

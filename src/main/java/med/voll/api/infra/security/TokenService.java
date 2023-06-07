@@ -18,35 +18,37 @@ import java.util.Date;
 public class TokenService {
 
     @Value("${api.security.token.secret}")
-    private String secret; //criado no porperties api.security.token.secret={JWT_SECRET} por estar entre chaves o spring sabe que deve procurar uma variavel de ambiente no computador
-    public String gerarToken(Usuario usuario){
+    private String secret;
+
+    public String gerarToken(Usuario usuario) {
         try {
-            var algoritimo = Algorithm.HMAC256(secret); //PRECISA DE SENHA PRA USAR O algoritimo
+            var algoritmo = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("API Voll.med")
-                    .withSubject(usuario.getLogin())// forma de identificar os usuarios
+                    .withSubject(usuario.getLogin())
                     .withExpiresAt(dataExpiracao())
-                    .sign(algoritimo);
+                    .sign(algoritmo);
         } catch (JWTCreationException exception){
-                throw new RuntimeException("erro ao gerar o token",exception);
+            throw new RuntimeException("erro ao gerar token jwt", exception);
         }
     }
-    public String getSubject(String tokenJWT){
+
+    public String getSubject(String tokenJWT) {
         try {
-            var algoritimo = Algorithm.HMAC256(secret);
-            return JWT.require(algoritimo)
+            var algoritmo = Algorithm.HMAC256(secret);
+
+            return JWT.require(algoritmo)
                     .withIssuer("API Voll.med")
                     .build()
                     .verify(tokenJWT)
                     .getSubject();
-
-        } catch (JWTVerificationException exception){
-                throw new RuntimeException("Token JWT invalido ou expirado");
+        } catch (JWTVerificationException exception) {
+            throw new RuntimeException("Token JWT inválido ou expirado!");
         }
-
     }
 
     private Instant dataExpiracao() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
+
 }
