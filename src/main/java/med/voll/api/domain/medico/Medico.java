@@ -1,6 +1,7 @@
 package med.voll.api.domain.medico;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class Medico {
 
     private Boolean ativo;
 
-    public Medico(DadosCadastroMedicos dados) {
+    public Medico(@Valid DadosCadastroMedicos dados) {
         this.ativo = true;
         this.nome = dados.nome();
         this.email = dados.email();
