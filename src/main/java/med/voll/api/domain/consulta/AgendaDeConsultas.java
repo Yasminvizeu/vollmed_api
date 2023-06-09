@@ -1,11 +1,14 @@
 package med.voll.api.domain.consulta;
 
 import med.voll.api.domain.ValidacaoException;
+import med.voll.api.domain.consulta.validacoes.ValidadorAgendamentDeConsultas;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service // executa regras de negocio e validações
 public class AgendaDeConsultas {
@@ -16,6 +19,9 @@ public class AgendaDeConsultas {
     private MedicoRepository medicoRepository;
     @Autowired
     private PacienteRepository pacienteRepository;
+    @Autowired
+    private List<ValidadorAgendamentDeConsultas> validadores; //implementando a interface
+
 
     public void agendar(DadosAgendamento dados) {
         //regras de negocio vem antes de tudo //validacoes de integridade
@@ -25,6 +31,9 @@ public class AgendaDeConsultas {
         if(dados.idMedico() != null && !medicoRepository.existsById(dados.idMedico())) { //garante que o id existe e devolve o erro
             throw new ValidacaoException("Id do medico informado não existe");
         }
+
+        //chama a lista de validadores
+        validadores.forEach(v -> v.validar(dados));
 
         //validacoes
 

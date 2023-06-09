@@ -2,10 +2,12 @@ package med.voll.api.domain.consulta.validacoes;
 
 import med.voll.api.domain.ValidacaoException;
 import med.voll.api.domain.consulta.DadosAgendamento;
+import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 
-public class ValidadorHorarioFuncionamentoClinica {
+@Component
+public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendamentDeConsultas {
 
 
     public void validar(DadosAgendamento dados){
