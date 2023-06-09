@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
@@ -28,11 +29,17 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             order by rand()
             limit 1
             """, nativeQuery = true)
-//use a sintaxe do JPQL
+        //use a sintaxe do JPQL
         //:especialidade ou :data significa paramentro do metodo
 
 
     Medico escolherMedicoAleatorioLivreNaData(Especialidade especialidade, LocalDateTime data);
 
 
+    @Query(value = """
+            select  m.ativo
+            from Medico m
+            where m.id = :id
+            """, nativeQuery = true)
+    Boolean findAllById(Long aLong);
 }

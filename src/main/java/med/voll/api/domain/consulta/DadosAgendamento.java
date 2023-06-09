@@ -13,8 +13,16 @@ public record DadosAgendamento(
         Long idPaciente,
 
         @NotNull
-        @Future // pra dizer que a data é no futuro, nao pode agendar consulta pra ontem
+        @Future // para dizer que a data é no futuro, não pode agendar consulta para ontem
         LocalDateTime data,
 
         Especialidade especialidade){
+
+        public Long getIdMedico() {
+                return idMedico;
+        }
+
+        public LocalDateTime getData() {
+                return data;
+        }
 }

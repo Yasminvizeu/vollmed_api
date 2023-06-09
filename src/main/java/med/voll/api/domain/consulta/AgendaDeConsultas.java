@@ -26,6 +26,8 @@ public class AgendaDeConsultas {
             throw new ValidacaoException("Id do medico informado não existe");
         }
 
+        //validacoes
+
         var paciente = pacienteRepository.findById(dados.idPaciente()).get();
         var medico = escolherMedico(dados); // findByI devolve um optional por isso por um .get()
         var consulta = new Consulta(null, paciente, medico, dados.data(), null); // o medico é opcinal e se for nulo deve entrar um medico aleatorio como default
