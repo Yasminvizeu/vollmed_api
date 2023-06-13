@@ -4,42 +4,38 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+@Repository
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
-
-    Page<Medico> findAllByAtivoTrue(Pageable pag);
-
-    //precisa esta em inlges seguindo o mesmo padrao pro sping conseguir buscad direto doo banco
+    Page<Medico> findAllByAtivoTrue(Pageable paginacao);//padrao de nomenclatura que o spring usa pra fazer a consulta
 
     @Query(value = """
-            select * from medicos m
-            where
-            m.ativo = 1
-            and
-            m.especialidade
-            and
-            m.id not in(
-            select c.medico_id from consultas c
-            where
-            c.data
-            )
-            order by rand()
-            limit 1
+            select m from Medico m
+                        where
+                        m.ativo = 1
+                        and
+                        m.especialidade = :especialidade
+                        and
+                        m.id not in(
+                            select c.medico.id from Consulta c
+                            where
+                            c.data = :data
+                    and
+                            c.motivoCancelamento is null
+                        )
+                        order by rand()
+                        limit 1
             """, nativeQuery = true)
-        //use a sintaxe do JPQL
-        //:especialidade ou :data significa paramentro do metodo
-
-
     Medico escolherMedicoAleatorioLivreNaData(Especialidade especialidade, LocalDateTime data);
 
-
     @Query(value = """
-            select  m.ativo
-            from Medico m
-            where m.id = :id
+            select m.ativo
+            from medicos m
+            where
+            m.id = :id
             """, nativeQuery = true)
-    Boolean findAllById(Long aLong);
+    Boolean findAtivoById(Long id);
 }

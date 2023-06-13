@@ -13,7 +13,7 @@ import med.voll.api.domain.endereco.Endereco;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id")// comopar um com o outro
 public class Medico {
 
     @Id

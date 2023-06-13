@@ -18,11 +18,4 @@ public record DadosAgendamento(
 
         Especialidade especialidade){
 
-        public Long getIdMedico() {
-                return idMedico;
-        }
-
-        public LocalDateTime getData() {
-                return data;
-        }
 }

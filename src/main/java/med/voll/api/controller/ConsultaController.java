@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.domain.consulta.*;
@@ -21,11 +22,12 @@ public class ConsultaController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name = "bearer-key")//BATE COM A STRING ODO ARUQIVO ED CONFIGURATIONS
     public ResponseEntity agendar(@RequestBody @Valid DadosAgendamento dados){
         //validaçoes e regra devem ser isoladas(classe de servico) não devem estra no controle, só controla o fluxo de execução
         //O controler faz a validação do Bean apenas
-        agenda.agendar(dados);
-        return ResponseEntity.ok(new DadosDetalhamentoConsulta(null, null, null,  null));
+       var dto =  agenda.agendar(dados);
+        return ResponseEntity.ok(dto);
     }
     @DeleteMapping
     @Transactional
